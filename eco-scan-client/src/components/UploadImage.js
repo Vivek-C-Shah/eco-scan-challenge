@@ -50,7 +50,16 @@ function UploadImage({ setResults }) {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setResults(response.data);
+      setResults(prevResults => ({
+        identified_items: [
+          ...(prevResults?.identified_items || []),
+          ...response.data.identified_items,
+        ],
+        carbon_scores: {
+          ...(prevResults?.carbon_scores || {}),
+          ...response.data.carbon_scores,
+        },
+      }));
     } catch (error) {
       console.error(error);
       alert("Error analyzing image");
@@ -66,10 +75,37 @@ function UploadImage({ setResults }) {
   };
 
   const removeImage = index => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
-    setImagePreviews(prevPreviews =>
-      prevPreviews.filter((_, i) => i !== index)
-    );
+    const updatedImages = images.filter((_, i) => i !== index);
+    const updatedPreviews = imagePreviews.filter((_, i) => i !== index);
+
+    setImages(updatedImages);
+    setImagePreviews(updatedPreviews);
+
+    // Reanalyze the remaining images
+    if (updatedImages.length > 0) {
+      const formData = new FormData();
+      updatedImages.forEach((image, idx) => {
+        formData.append("file", image);
+      });
+
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/analyze-image`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then(response => {
+          setResults({
+            identified_items: response.data.identified_items,
+            carbon_scores: response.data.carbon_scores,
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Error reanalyzing images");
+        });
+    } else {
+      // If no images are left, clear the results
+      setResults({ identified_items: [], carbon_scores: {} });
+    }
   };
 
   const { getRootProps, getInputProps } = useDropzone({

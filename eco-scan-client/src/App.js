@@ -15,11 +15,7 @@ import {
 function App() {
   const [results, setResults] = useState(null);
   const [ecoScore, setEcoScore] = useState(null);
-  const [showOffers, setShowOffers] = useState(false); // State to manage offers visibility
-  // const url = process.env.PUBLIC_URL || "http://localhost:3000";
-  console.log(
-    `${process.env.PUBLIC_URL}/bg.png printing bg image with public url`
-  );
+  const [showOffers, setShowOffers] = useState(false);
 
   return (
     <div
@@ -34,7 +30,7 @@ function App() {
       <AppBar position="static" sx={{ backgroundColor: "rgb(82, 110, 72)" }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            EcoScan
+            Welcome to EcoScan
           </Typography>
         </Toolbar>
       </AppBar>
