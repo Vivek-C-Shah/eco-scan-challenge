@@ -1,0 +1,9 @@
+/* src/App.css */
+
+.App {
+	text-align: center;
+}
+
+input[type="file"] {
+	margin: 1rem 0;
+}

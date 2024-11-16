@@ -1,0 +1,14 @@
+/* src/index.css */
+
+body {
+	margin: 0;
+	font-family: "Roboto", sans-serif;
+}
+
+input[type="file"] {
+	display: inline-block;
+}
+
+button {
+	margin: 0.5rem;
+}
