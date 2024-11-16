@@ -1,6 +1,8 @@
 fastapi
+pytest
+requests
 uvicorn
-openai
 python-multipart
+pillow
 python-dotenv
-Pillow
+openai
